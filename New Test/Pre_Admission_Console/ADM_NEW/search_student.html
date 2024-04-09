@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/New Test/Pre_Admission_Console/ADM_NEW/search_student.css">
+    <title>Search Student Details</title>
+</head>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+    }
+
+    .container {
+        text-align: center;
+        /* margin-bottom: 20px; */
+        display: flex;
+        gap: 0.3rem;
+        justify-content: center;
+        align-items: center;
+    }
+
+    h2 {
+        /* margin-bottom: 10px; */
+        font-size: 2rem;
+        text-align: center;
+    }
+
+    #searchField {
+        padding: 5px;
+        margin-right: 10px;
+        width: 25rem;
+        height: 1.5rem;
+        border-radius: 0.5rem;
+    }
+
+    #searchButton,
+    #refreshButton {
+        /* padding: 5px 10px; */
+        cursor: pointer;
+        background-color: #4CAF50;
+        color: white;
+        border: none;
+        border-radius: 20px;
+        height: 2.3rem;
+        width: 7rem;
+        font-size: 1.2rem;
+    }
+
+    #admitted_students {
+        cursor: pointer;
+        background-color: #4CAF50;
+        color: white;
+        border: none;
+        border-radius: 20px;
+        height: 2.3rem;
+        width: 11rem;
+        font-size: 1.2rem;
+    }
+
+    #export_admitted_students,
+    #export_registered_students {
+        cursor: pointer;
+        background-color: #4CAF50;
+        color: white;
+        border: none;
+        border-radius: 20px;
+        height: 2.3rem;
+        width: 7rem;
+        font-size: 1.2rem;
+    }
+
+    #searchButton:hover,
+    #admitted_students:hover,
+    #refreshButton:hover,
+    #export_admitted_students:hover {
+        background-color: #45a049;
+    }
+
+    #classFilter {
+        padding: 5px;
+        margin-bottom: 10px;
+        border-radius: 0.5rem;
+        width: 10rem;
+        height: 2.2rem;
+    }
+
+    #output {
+        padding: 2rem;
+    }
+
+    #studentTable {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    #studentTable th,
+    #studentTable td {
+        border: 1px solid #dddddd;
+        padding: 8px;
+        text-align: left;
+    }
+
+    #studentTable th {
+        background-color: #f2f2f2;
+    }
+
+    .student-details {
+        padding: 20px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        margin-top: 20px;
+    }
+
+    .student {
+        display: flex;
+        /* flex-direction: column; */
+        justify-content: space-evenly;
+        gap: 5rem;
+        border: 1px solid #ccc;
+        padding: 10px;
+        margin-bottom: 10px;
+    }
+
+    .student p {
+        margin: 5px 0;
+        display: flex;
+        /* Use flexbox for horizontal alignment */
+        justify-content: space-between;
+        /* Distribute items equally along the row */
+        align-items: center;
+        /* Center items vertically */
+    }
+
+    .student button {
+        margin-top: auto;
+        /* Push buttons to the bottom */
+        align-self: center;
+        /* Center buttons horizontally */
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        padding: 5px 10px;
+        cursor: pointer;
+    }
+
+    .student button:hover {
+        background-color: #0056b3;
+    }
+
+    .loading-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(255, 255, 255, 0.7);
+        /* Semi-transparent white background */
+        z-index: 9999;
+        /* Ensure the overlay appears on top of other content */
+        display: none;
+        /* Initially hidden */
+    }
+
+    .loader {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        border: 5px solid #f3f3f3;
+        /* Light gray border */
+        border-top: 5px solid #3498db;
+        /* Blue border for the top */
+        border-radius: 50%;
+        /* Circular shape */
+        width: 50px;
+        /* Width and height of the circle */
+        height: 50px;
+        animation: spin 1s linear infinite;
+        /* Rotate animation */
+    }
+
+    @keyframes spin {
+        0% {
+            transform: translate(-50%, -50%) rotate(0deg);
+        }
+
+        100% {
+            transform: translate(-50%, -50%) rotate(360deg);
+        }
+    }
+
+
+    .toast {
+        position: fixed;
+        top: 20px;
+        right: -200px;
+        /* Initially off-screen to the right */
+        background-color: #4CAF50;
+        /* Green background */
+        color: white;
+        padding: 16px;
+        border-radius: 8px;
+        z-index: 9999;
+        display: none;
+        /* Changed from 'none' to 'block' */
+        animation: slideInRight 0.5s forwards;
+        /* Slide in animation */
+    }
+
+    @keyframes slideInRight {
+        from {
+            right: -200px;
+            /* Start off-screen to the right */
+        }
+
+        to {
+            right: 20px;
+            /* End at the desired position */
+        }
+    }
+
+    .toast.error {
+        background-color: #f44336;
+        /* Red background for error */
+    }
+</style>
+
+<body>
+    <div id="toast" class="toast"></div>
+    <h2>Search Student Details</h2>
+    <div class="container">
+        <div id="loadingOverlay" class="loading-overlay">
+            <div class="loader"></div>
+        </div>
+
+        <input type="text" id="searchField" placeholder="Enter Student Name...">
+        <button id="searchButton" onclick="searchDetails()">Search</button>
+        <button id="refreshButton" onclick="refreshData()">Refresh</button>
+        <select id="classFilter" onchange="filterByClass()">
+            <option value="">Filter by Class</option>
+            <option value="Nursery">Nursery</option>
+            <option value="KG-1">KG-1</option>
+            <option value="KG-2">KG-2</option>
+            <option value="1st">1st</option>
+            <option value="2nd">2nd</option>
+            <option value="3rd">3rd</option>
+            <option value="4th">4th</option>
+            <option value="5th">5th</option>
+            <option value="6th">6th</option>
+            <option value="7th">7th</option>
+            <option value="8th">8th</option>
+            <option value="9th">9th</option>
+            <option value="10th">10th</option>
+        </select>
+        <button id="admitted_students" onclick="window.location.href = 'admitted_student.html'">Admitted
+            Students</button>
+        <button id="export_registered_students" onclick="exportToExcel()">Export Reg</button>
+
+
+    </div>
+    <div id="output">
+        <table id="studentTable">
+            <thead>
+                <tr>
+                    <th>Student Name</th>
+                    <th>Mobile No</th>
+                    <th>Address</th>
+                    <th>Date of Birth</th>
+                    <th>Standard</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody id="studentData"></tbody>
+        </table>
+    </div>
+    <!-- <div id="output" class="student-details"></div> -->
+
+    <script>
+        function showLoadingAnimation() {
+            document.getElementById('loadingOverlay').style.display = 'block';
+        }
+
+        function hideLoadingAnimation() {
+            document.getElementById('loadingOverlay').style.display = 'none';
+        }
+
+        function refreshData() {
+            showLoadingAnimation();
+            document.getElementById('searchField').value = '';
+            document.getElementById('classFilter').value = '';
+            fetch('/students')
+                .then(response => response.json())
+                .then(data => displayStudents(data))
+                .catch(error => console.error('Error:', error));
+        }
+
+        function displayStudents(data) {
+            const studentTable = document.getElementById('studentData');
+            studentTable.innerHTML = ''; // Clear previous data
+
+            data.forEach(student => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+            <td>${student.student_name}</td>
+            <td>${student.mobile_no}</td>
+            <td>${student.res_address}</td>
+            <td>${student.dob}</td>
+            <td>${student.standard}</td>
+            <td>
+                <button onclick="moveToAdmitted('${student.student_name}', '${student.mobile_no}', '${student.res_address}', '${student.dob}', '${student.standard}')">Admit</button>
+                <button onclick="removeStudent('${student.student_name}', '${student.mobile_no}')">Delete</button>
+
+            </td>
+        `;
+                studentTable.appendChild(row);
+            });
+            hideLoadingAnimation();
+        }
+
+        // function displayStudents(data) {
+        //     const studentDetailsContainer = document.getElementById('output');
+        //     studentDetailsContainer.innerHTML = ''; // Clear previous data
+
+        //     data.forEach(student => {
+        //         const studentDiv = document.createElement('div');
+        //         studentDiv.classList.add('student');
+
+        //         studentDiv.innerHTML = `
+        //             <p><strong>Student Name:</strong> ${student.student_name}</p>
+        //             <p><strong>Mobile No:</strong> ${student.mobile_no}</p>
+        //             <p><strong>Address:</strong> ${student.res_address}</p>
+        //             <p><strong>Date of Birth:</strong> ${student.dob}</p>
+        //             <p><strong>Standard:</strong> ${student.standard}</p>
+        //             <button onclick="moveToAdmitted('${student.student_name}', '${student.mobile_no}', '${student.res_address}', '${student.dob}', '${student.standard}')">Admit</button>
+        //             <button onclick="removeStudent('${student.student_name}', '${student.mobile_no}')">Delete</button>
+        //         `;
+
+        //         studentDetailsContainer.appendChild(studentDiv);
+        //     });
+        // }
+
+        function moveToAdmitted(studentName, mobileNo, address, dob, standard) {
+            const confirmation = confirm(`Are you sure you want to admit the student "${studentName}"?`);
+            if (confirmation) {
+                showLoadingAnimation();
+                fetch(`/move-to-admitted?name=${encodeURIComponent(studentName)}&mobile=${encodeURIComponent(mobileNo)}&address=${encodeURIComponent(address)}&dob=${encodeURIComponent(dob)}&standard=${encodeURIComponent(standard)}`, {
+                    method: 'POST'
+                })
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Failed to admit student.');
+                        }
+                        hideLoadingAnimation();
+                        // alert('Student admitted successfully.'); // Log success message
+                        showToast('Student admitted successfully.', false); // Show error toast
+                        refreshData();
+                    })
+                    .catch(error => {
+                        console.error('Error admitting student:', error);
+                        hideLoadingAnimation();
+                        // alert('An error occurred while admitting the student.');
+                        showToast('An error occurred while admitting the student.', true); // Show error toast
+
+                    });
+            } else {
+                console.log('Admission canceled.'); // Log cancellation message
+            }
+        }
+
+
+        function removeStudent(studentName, mobileNo) {
+            const confirmation = confirm(`Are you sure you want to remove the student "${studentName}"?`);
+            if (confirmation) {
+                showLoadingAnimation();
+                fetch(`/remove-student?name=${encodeURIComponent(studentName)}&mobile=${encodeURIComponent(mobileNo)}`, {
+                    method: 'DELETE'
+                })
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Failed to remove student.');
+                        }
+                        showToast('Student deleted successfully.', false); // Show error toast
+                        // alert('Student deleted successfully.'); // Log success message
+                        refreshData(); // Refresh data after removing the student
+                    })
+                    .catch(error => {
+                        console.error('Error removing student:', error);
+                        // alert('An error occurred while removing the student.');
+                        showToast('An error occurred while removing the student.', true); // Show error toast
+                    });
+            }
+        }
+
+
+        // function filterByClass() {
+        //     const selectedClass = document.getElementById('classFilter').value;
+        //     const studentDetailsContainer = document.getElementById('output');
+
+        //     if (selectedClass === '') {
+        //         // If no class selected, refresh data to show all students
+        //         refreshData();
+        //         return;
+        //     }
+
+        //     // Fetch data from the server filtered by class
+        //     fetch(`/students/class/${selectedClass}`)
+        //         .then(response => response.json())
+        //         .then(data => {
+        //             studentDetailsContainer.innerHTML = ''; // Clear previous data
+
+        //             if (data.length === 0) {
+        //                 // If no results found, display a message
+        //                 studentDetailsContainer.innerHTML = '<p>No results found</p>';
+        //             } else {
+        //                 // Append student data to the container
+        //                 data.forEach(student => {
+        //                     const row = document.createElement('tr');
+        //                     row.innerHTML = `
+        //     <td>${student.student_name}</td>
+        //     <td>${student.mobile_no}</td>
+        //     <td>${student.res_address}</td>
+        //     <td>${student.dob}</td>
+        //     <td>${student.standard}</td>
+        //     <td>
+        //         <button onclick="moveToAdmitted('${student.student_name}', '${student.mobile_no}', '${student.res_address}', '${student.dob}', '${student.standard}')">Admit</button>
+        //         <button onclick="removeStudent('${student.student_name}', '${student.mobile_no}')">Delete</button>
+
+        //     </td>
+        // `;
+        //                     studentTable.appendChild(row);
+        //                 });
+        //             }
+        //         })
+        //         .catch(error => console.error('Error:', error));
+        // }
+
+        function filterByClass() {
+            const selectedClass = document.getElementById('classFilter').value;
+            const studentDetailsContainer = document.getElementById('studentData');
+            showLoadingAnimation();
+
+            if (selectedClass === '') {
+                // If no class selected, refresh data to show all students
+                refreshData();
+                return;
+            }
+
+            // Fetch data from the server filtered by class
+            fetch(`/students/class/${selectedClass}`)
+                .then(response => response.json())
+                .then(data => {
+                    studentDetailsContainer.innerHTML = ''; // Clear previous data
+
+                    if (data.length === 0) {
+                        // If no results found, display a message
+                        studentDetailsContainer.innerHTML = '<tr><td colspan="6">No results found</td></tr>';
+                    } else {
+                        // Append student data to the table
+                        data.forEach(student => {
+                            const row = document.createElement('tr');
+                            row.innerHTML = `
+                        <td>${student.student_name}</td>
+                        <td>${student.mobile_no}</td>
+                        <td>${student.res_address}</td>
+                        <td>${student.dob}</td>
+                        <td>${student.standard}</td>
+                        <td>
+                            <button onclick="moveToAdmitted('${student.student_name}', '${student.mobile_no}', '${student.res_address}', '${student.dob}', '${student.standard}')">Admit</button>
+                            <button onclick="removeStudent('${student.student_name}', '${student.mobile_no}')">Delete</button>
+                        </td>
+                    `;
+                            studentDetailsContainer.appendChild(row);
+                        });
+                    }
+                    hideLoadingAnimation();
+                })
+                .catch(error => console.error('Error:', error));
+        }
+
+
+        // function searchDetails() {
+        //     const searchTerm = document.getElementById('searchField').value.trim();
+
+        //     // Check if the search term is empty
+        //     if (searchTerm === '') {
+        //         alert('Please enter a search term.');
+        //         return;
+        //     }
+
+        //     // If search term is empty, refresh data to show all students
+        //     if (!searchTerm) {
+        //         refreshData();
+        //         return;
+        //     }
+
+        //     // Fetch data from the server based on the search term
+        //     fetch(`/students/search?search=${encodeURIComponent(searchTerm)}`)
+        //         .then(response => response.json())
+        //         .then(data => {
+        //             const studentDataContainer = document.getElementById('output');
+        //             studentDataContainer.innerHTML = ''; // Clear previous data
+
+        //             if (data.length === 0) {
+        //                 // If no results found, display a message
+        //                 const noResultsMsg = document.createElement('div');
+        //                 noResultsMsg.textContent = 'No results found';
+        //                 studentDataContainer.appendChild(noResultsMsg);
+        //             } else {
+        //                 // Append student data to the container
+        //                 data.forEach(student => {
+        //                     const studentDiv = document.createElement('div');
+        //                     studentDiv.classList.add('student');
+
+        //                     studentDiv.innerHTML = `
+        //                 <p><strong>Student Name:</strong> ${student.student_name}</p>
+        //                 <p><strong>Mobile No:</strong> ${student.mobile_no}</p>
+        //                 <p><strong>Address:</strong> ${student.res_address}</p>
+        //                 <p><strong>Date of Birth:</strong> ${student.dob}</p>
+        //                 <p><strong>Standard:</strong> ${student.standard}</p>
+        //                 <button onclick="moveToAdmitted('${student.student_name}', '${student.mobile_no}', '${student.res_address}', '${student.dob}', '${student.standard}')">Admit</button>
+        //                 <button onclick="removeStudent('${student.student_name}', '${student.mobile_no}')">Delete</button>
+        //             `;
+
+        //                     studentDataContainer.appendChild(studentDiv);
+        //                 });
+        //             }
+        //         })
+        //         .catch(error => console.error('Error:', error));
+        // }
+
+        function searchDetails() {
+            showLoadingAnimation();
+
+            const searchTerm = document.getElementById('searchField').value.trim();
+
+            // Check if the search term is empty
+            if (searchTerm === '') {
+                // alert('Please enter a search term.');
+                showToast('Please enter a search term.', true); // Show error toast
+                hideLoadingAnimation();
+                return;
+            }
+
+            // If search term is empty, refresh data to show all students
+            if (!searchTerm) {
+                refreshData();
+                return;
+            }
+
+            // Fetch data from the server based on the search term
+            fetch(`/students/search?search=${encodeURIComponent(searchTerm)}`)
+                .then(response => response.json())
+                .then(data => {
+                    const studentTable = document.getElementById('studentData');
+                    studentTable.innerHTML = ''; // Clear previous data
+
+                    if (data.length === 0) {
+                        // If no results found, display a message
+                        const noResultsRow = document.createElement('tr');
+                        noResultsRow.innerHTML = '<td colspan="6">No results found</td>';
+                        studentTable.appendChild(noResultsRow);
+                    } else {
+                        // Append student data to the table
+                        data.forEach(student => {
+                            const row = document.createElement('tr');
+                            row.innerHTML = `
+                        <td>${student.student_name}</td>
+                        <td>${student.mobile_no}</td>
+                        <td>${student.res_address}</td>
+                        <td>${student.dob}</td>
+                        <td>${student.standard}</td>
+                        <td>
+                            <button onclick="moveToAdmitted('${student.student_name}', '${student.mobile_no}', '${student.res_address}', '${student.dob}', '${student.standard}')">Admit</button>
+                            <button onclick="removeStudent('${student.student_name}', '${student.mobile_no}')">Delete</button>
+                        </td>
+                    `;
+                            studentTable.appendChild(row);
+                        });
+                    }
+                    hideLoadingAnimation();
+                })
+                .catch(error => console.error('Error:', error));
+        }
+
+        function showToast(message, isError) {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+
+            // Set class based on isError flag
+            if (isError) {
+                toast.classList.add('error');
+            } else {
+                toast.classList.remove('error');
+            }
+
+            // Show the toast
+            toast.style.display = 'block';
+
+            // Hide the toast after 3 seconds
+            setTimeout(function () {
+                toast.style.display = 'none';
+            }, 3000);
+        }
+
+        ////////////////////////////// EXPORT TO EXCEL //////////////////////////////////////////////
+
+
+
+        function exportToExcel() {
+
+            const selectedClass = document.getElementById('classFilter').value;
+
+            var htmlTable = document.getElementById('studentTable');
+            var html = htmlTable.outerHTML;
+
+            // Generate a temporary download link
+            var downloadLink = document.createElement("a");
+            document.body.appendChild(downloadLink);
+
+            // CSV representation of the HTML table
+            var csv = [];
+            var rows = htmlTable.rows;
+            for (var i = 0; i < rows.length; i++) {
+                var row = [], cols = rows[i].cells;
+                for (var j = 0; j < cols.length - 1; j++)
+                    row.push(cols[j].innerText);
+                csv.push(row.join(","));
+            }
+
+            // Convert to CSV string
+            var csvContent = csv.join("\n");
+
+            // Set CSV as href and download attributes
+            downloadLink.href = 'data:text/csv;charset=utf-8,' + encodeURI(csvContent);
+
+            if (selectedClass == '') {
+                downloadLink.download = 'All Registered Students.csv';
+            }
+            else {
+                downloadLink.download = selectedClass + ' Registered Students.csv';
+            }
+
+            // Trigger the download
+            downloadLink.click();
+        }
+
+
+
+        refreshData();
+
+
+    </script>
+
+    <script src="handle_session.js"></script>
+
+</body>
+
+
+</html>

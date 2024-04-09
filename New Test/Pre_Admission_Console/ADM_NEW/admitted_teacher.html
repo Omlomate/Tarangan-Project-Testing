@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- <link rel="stylesheet" href="search_teacher.css"> -->
+    <title>Admitted Teacher Details</title>
+</head>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+    }
+
+    .container {
+        text-align: center;
+        /* margin-bottom: 20px; */
+        display: flex;
+        gap: 0.3rem;
+        justify-content: center;
+        align-items: center;
+    }
+
+    h2 {
+        /* margin-bottom: 10px; */
+        font-size: 2rem;
+        text-align: center;
+    }
+
+    #searchField {
+        padding: 5px;
+        margin-right: 10px;
+        width: 25rem;
+        height: 1.5rem;
+        border-radius: 0.5rem;
+    }
+
+    #searchButton,
+    #refreshButton,
+    #export_admitted_teacher {
+        /* padding: 5px 10px; */
+        cursor: pointer;
+        background-color: #4CAF50;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        height: 2.3rem;
+        width: 7rem;
+        font-size: 1.2rem;
+    }
+
+    #searchButton:hover,
+    #refreshButton:hover,
+    #export_admitted_teacher:hover {
+        background-color: #45a049;
+    }
+
+    #classFilter {
+        padding: 5px;
+        margin-bottom: 10px;
+        border-radius: 0.5rem;
+        width: 15rem;
+        height: 2.5rem;
+    }
+
+    .student-details {
+        padding: 20px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        margin-top: 20px;
+    }
+
+    #output {
+        width: 90%;
+        margin: 0 auto;
+        /* This centers the element horizontally */
+    }
+
+    #output {
+        padding: 2rem;
+    }
+
+    #teacherTable {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    #teacherTable th,
+    #teacherTable td {
+        border: 1px solid #dddddd;
+        padding: 8px;
+        text-align: left;
+    }
+
+    #teacherTable th {
+        background-color: #f2f2f2;
+    }
+</style>
+
+<body>
+    <h2>Admitted Teacher Details</h2>
+    <div class="container">
+
+        <input type="text" id="searchField" placeholder="Enter student ID or name...">
+        <button id="searchButton" onclick="searchDetails()">Search</button>
+        <button id="refreshButton" onclick="refreshData()">Refresh</button>
+        <button id="export_admitted_teacher" onclick="exportToExcel()">Export Adm</button>
+
+
+    </div>
+    <div id="output">
+        <table id="teacherTable">
+            <thead>
+                <tr>
+                    <th>Teacher Name</th>
+                    <th>Mobile No</th>
+                    <th>Address</th>
+                    <th>Date of Birth</th>
+                    <th>Qualification</th>
+                    <th>Experience</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody id="teacherData"></tbody>
+        </table>
+    </div>
+    <!-- <div id="output" class="teacher-details"></div> -->
+
+    <script>
+        function refreshData() {
+            document.getElementById('searchField').value = '';
+            fetch('/admitted_teachers')
+                .then(response => response.json())
+                .then(data => displayTeachers(data))
+                .catch(error => console.error('Error:', error));
+        }
+
+
+        function displayTeachers(data) {
+            const teacherTableBody = document.getElementById('teacherData');
+            teacherTableBody.innerHTML = ''; // Clear previous data
+
+            data.forEach(teacher => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+            <td>${teacher.teacher_name}</td>
+            <td>${teacher.mobile_no}</td>
+            <td>${teacher.res_address}</td>
+            <td>${teacher.dob}</td>
+            <td>${teacher.qualification}</td>
+            <td>${teacher.experience}</td>
+            <td><button onclick="removeTeacher('${teacher.teacher_name}', '${teacher.mobile_no}')">Delete</button></td>
+        `;
+                teacherTableBody.appendChild(row);
+            });
+        }
+
+        function searchDetails() {
+            const searchTerm = document.getElementById('searchField').value.trim();
+
+            // Check if the search term is empty
+            if (searchTerm === '') {
+                alert('Please enter a search term.');
+                return;
+            }
+
+            // If search term is empty, refresh data to show all teachers
+            if (!searchTerm) {
+                refreshData();
+                return;
+            }
+
+            // Fetch data from the server based on the search term
+            fetch(`/admitted_teachers/search?search=${encodeURIComponent(searchTerm)}`)
+                .then(response => response.json())
+                .then(data => {
+                    const teacherTableBody = document.getElementById('teacherData');
+                    teacherTableBody.innerHTML = ''; // Clear previous data
+
+                    if (data.length === 0) {
+                        // If no results found, display a message
+                        const noResultsRow = document.createElement('tr');
+                        noResultsRow.innerHTML = '<td colspan="7">No results found</td>';
+                        teacherTableBody.appendChild(noResultsRow);
+                    } else {
+                        // Append teacher data to the table
+                        data.forEach(teacher => {
+                            const row = document.createElement('tr');
+                            row.innerHTML = `
+                        <td>${teacher.teacher_name}</td>
+                        <td>${teacher.mobile_no}</td>
+                        <td>${teacher.res_address}</td>
+                        <td>${teacher.dob}</td>
+                        <td>${teacher.qualification}</td>
+                        <td>${teacher.experience}</td>
+                        <td>
+                            <button onclick="removeTeacher('${teacher.teacher_name}', '${teacher.mobile_no}')">Delete</button>
+                        </td>
+                    `;
+                            teacherTableBody.appendChild(row);
+                        });
+                    }
+                })
+                .catch(error => console.error('Error:', error));
+        }
+
+
+
+        function removeTeacher(teacherName, mobileNo) {
+            const confirmation = confirm(`Are you sure you want to remove the teacher "${teacherName}"?`);
+            if (confirmation) {
+                fetch(`/remove-adm-teacher?name=${encodeURIComponent(teacherName)}&mobile=${encodeURIComponent(mobileNo)}`, {
+                    method: 'DELETE'
+                })
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Failed to remove teacher.');
+                        }
+                        alert('Teacher removed successfully.'); // Log success message
+                        refreshData(); // Refresh data after removing the teacher
+                    })
+                    .catch(error => {
+                        console.error('Error removing teacher:', error);
+                        alert('An error occurred while removing the teacher.');
+                    });
+            }
+        }
+
+
+        function exportToExcel() {
+            var htmlTable = document.getElementById('teacherTable');
+            var html = htmlTable.outerHTML;
+
+            // Generate a temporary download link
+            var downloadLink = document.createElement("a");
+            document.body.appendChild(downloadLink);
+
+            // CSV representation of the HTML table
+            var csv = [];
+            var rows = htmlTable.rows;
+            for (var i = 0; i < rows.length; i++) {
+                var row = [], cols = rows[i].cells;
+                for (var j = 0; j < cols.length - 1; j++)
+                    row.push(cols[j].innerText);
+                csv.push(row.join(","));
+            }
+
+            // Convert to CSV string
+            var csvContent = csv.join("\n");
+
+            // Set CSV as href and download attributes
+            downloadLink.href = 'data:text/csv;charset=utf-8,' + encodeURI(csvContent);
+            downloadLink.download = 'Admitted_Teachers.csv';
+
+            // Trigger the download
+            downloadLink.click();
+        }
+
+
+        refreshData();
+    </script>
+    <script src="handle_session.js"></script>
+
+</body>
