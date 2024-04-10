@@ -8,7 +8,7 @@ app.use(express.json());
 app.use(cookieParser());
 
 // Serve static files from the parent directory
-app.use(express.static(path.join(__dirname, 'New Test')));
+app.use(express.static(path.join(__dirname, 'Test')));
 
 // Route to serve index.html for login page
 app.get('/', (req, res) => {
