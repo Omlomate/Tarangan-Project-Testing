@@ -1,0 +1,31 @@
+*{
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
+
+
+.sidebar {
+    width: 200px; /* Adjust width as needed */
+    height: 100vh; /* Make sidebar full height */
+    background-color: #f0f0f0; /* Sidebar background color */
+    float: left; /* Float left to position on the left side */
+    padding: 20px; /* Add padding */
+}
+
+/* Style for sidebar buttons */
+.sidebar button {
+    display: block; /* Display buttons as blocks */
+    margin-bottom: 10px; /* Add margin between buttons */
+    width: 100%; /* Make buttons full width */
+    padding: 10px; /* Add padding */
+    background-color: #ddd; /* Button background color */
+    border: none; /* Remove button border */
+    cursor: pointer; /* Change cursor to pointer */
+}
+
+/* Style for main content area */
+.main-content {
+    margin-left: 220px; /* Adjust margin to account for sidebar width */
+    padding: 20px; /* Add padding */
+}

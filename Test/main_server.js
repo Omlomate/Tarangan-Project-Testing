@@ -8,11 +8,12 @@ app.use(express.json());
 app.use(cookieParser());
 
 // Serve static files from the parent directory
-app.use(express.static(path.join(__dirname, 'Test')));
+// app.use(express.static(path.join(__dirname, 'Test')));
+app.use(express.static(path.join(__dirname, 'public')));
 
 // Route to serve index.html for login page
 app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, '..','Login', 'login.html'));
+    res.sendFile(path.join(__dirname, 'public', 'Login','login.html'));
 });
  
   
@@ -71,7 +72,7 @@ app.post('/login', (req, res) => {
             global.token = jwt.sign({ userId: user.userID }, JWT_SECRET, { expiresIn: '5m' });
             // Save JWT to cookie
             res.cookie('jwt', token, { httpOnly: false, maxAge: 300000 }); // Cookie expires in 1 hour    
-            res.redirect('/dashboard');
+            res.redirect('/main_dashboard');
 
         }
         else {
@@ -89,8 +90,12 @@ app.use(authenticateToken);
 
 // Set up Express to serve dashboardhtml as the main dashboard page
 // Route to serve dashboard after login
-app.get('/dashboard', (req, res) => {
-    res.sendFile(path.join(__dirname,'..', 'Dashboard_Main', 'dashboard.html'));
+app.get('/main_dashboard', (req, res) => {
+    res.sendFile(path.join(__dirname,'public' , 'Main_Dashboard', 'main_dashboard.html'));
+});
+
+app.get('/main_dashboard/dashboard', (req, res) => {
+    res.sendFile(path.join(__dirname,'public','Pre_Admission_Console', 'dashboard.html'));
 });
 
 // // Route to serve files under Pre_Admission_Console
@@ -100,43 +105,43 @@ app.get('/dashboard', (req, res) => {
 // });
 
 // Route to serve the Age Calculator HTML file
-app.get('/age-calculator', (req, res) => {
-    res.sendFile(path.join(__dirname, 'ADM_NEW', 'age_calculator.html'));
+app.get('/main_dashboard/dashboard/age-calculator', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public','Pre_Admission_Console', 'age_calculator.html'));
 });
 // Route to serve the Student Details HTML file
-app.get('/register-student', authenticateToken, (req, res) => {
-    res.sendFile(path.join(__dirname, 'ADM_NEW', 'register_student.html'));
+app.get('/main_dashboard/dashboard/register-student', authenticateToken, (req, res) => {
+    res.sendFile(path.join(__dirname, 'public','Pre_Admission_Console', 'register_student.html'));
 });
 // Route to serve the Search Student HTML file
-app.get('/search-student', authenticateToken, (req, res) => {
-    res.sendFile(path.join(__dirname, 'ADM_NEW', 'search_student.html'));
+app.get('/main_dashboard/dashboard/search-student', authenticateToken, (req, res) => {
+    res.sendFile(path.join(__dirname, 'public','Pre_Admission_Console', 'search_student.html'));
 });
 // Route to serve the Register Teacher HTML file
-app.get('/register-teacher', authenticateToken, (req, res) => {
-    res.sendFile(path.join(__dirname, 'ADM_NEW', 'register_teacher.html'));
+app.get('/main_dashboard/dashboard/register-teacher', authenticateToken, (req, res) => {
+    res.sendFile(path.join(__dirname, 'public','Pre_Admission_Console', 'register_teacher.html'));
 });
 //Route to serve the Search Teacher HTML file
-app.get('/search-teacher', authenticateToken, (req, res) => {
-    res.sendFile(path.join(__dirname, 'ADM_NEW', 'search_teacher.html'));
+app.get('/main_dashboard/dashboard/search-teacher', authenticateToken, (req, res) => {
+    res.sendFile(path.join(__dirname, 'public','Pre_Admission_Console', 'search_teacher.html'));
 });
 // Serve HTML form
-app.get('/', authenticateToken, (req, res) => {
-    res.sendFile(__dirname, 'ADM_NEW', '/admitted_student.html');
+app.get('/main_dashboard/dashboard/admitted_student', authenticateToken, (req, res) => {
+    res.sendFile(path.join(__dirname, 'public','Pre_Admission_Console', 'admitted_student.html'));
 });
 //Serve HTML form
-app.get('/', authenticateToken, (req, res) => {
-    res.sendFile(__dirname, 'ADM_NEW', '/admitted_teacher.html');
+app.get('/main_dashboard/dashboard/admitted_teacher', authenticateToken, (req, res) => {
+    res.sendFile(path.join(__dirname, 'public','Pre_Admission_Console', 'admitted_teacher.html'));
 });
 
 // Middleware to authenticate JWT
 function authenticateToken(req, res, next) {
     const token = req.cookies.jwt;
     if (!token) {
-        return res.redirect('/login');
+        return res.redirect('/');
     }
     jwt.verify(token, JWT_SECRET, (err, decoded) => {
         if (err) {
-            return res.redirect('/login')
+            return res.redirect('/')
         }
         req.user = decoded;
         next();
