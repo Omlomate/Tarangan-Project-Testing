@@ -227,6 +227,26 @@
         background-color: #f44336;
         /* Red background for error */
     }
+
+    @keyframes fadeUp {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+            /* Initial position */
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+            /* Final position */
+        }
+    }
+
+    /* Apply the animation to table rows */
+    tr.fade-up {
+        animation: fadeUp 0.5s ease forwards;
+        /* Adjust animation duration and timing function as needed */
+    }
 </style>
 
 <body>
@@ -256,7 +276,8 @@
             <option value="9th">9th</option>
             <option value="10th">10th</option>
         </select>
-        <button id="admitted_students" onclick="window.location.href = '/main_dashboard/dashboard/admitted_student'">Admitted Students</button>
+        <button id="admitted_students"
+            onclick="window.location.href = '/main_dashboard/dashboard/admitted_student'">Admitted Students</button>
         <!-- <button class="button" onclick="navigate_to_admitted_student()">Admitted Students</button> -->
         <button id="export_registered_students" onclick="exportToExcel()">Export Reg</button>
 
@@ -299,6 +320,15 @@
         }
 
         function displayStudents(data) {
+
+            // Function to add fade-up animation to table rows
+            function addFadeUpAnimation() {
+                const rows = document.querySelectorAll('#studentData tr');
+                rows.forEach((row, index) => {
+                    row.classList.add('fade-up');
+                });
+            }
+
             const studentTable = document.getElementById('studentData');
             studentTable.innerHTML = ''; // Clear previous data
 
@@ -318,7 +348,9 @@
         `;
                 studentTable.appendChild(row);
             });
+            addFadeUpAnimation();
             hideLoadingAnimation();
+            
         }
 
         // function displayStudents(data) {
