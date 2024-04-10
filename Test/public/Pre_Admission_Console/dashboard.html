@@ -91,35 +91,14 @@
             };
         })
 
-        // Add an event listener for the popstate event
-        window.addEventListener('popstate', function (event) {
-            // Make an AJAX request to logout route
-            const confirmation = confirm(`Are you sure you want to logout ?`);
-            if (confirmation) {
-                fetch('/logout', {
-                    method: 'GET',
-                    credentials: 'same-origin' // Send cookies with the request
-                })
-                    .then(response => {
-                        if (response.ok) {
-                            // Redirect to homepage or login page
-                            window.location.href = '/';
-                        } else {
-                            console.error('Logout failed');
-                        }
-                    })
-                    .catch(error => console.error('Error during logout:', error));
-            };
-        });
+        
 
-        // Push a new state to the history when the page is loaded
-        window.history.pushState(null, null, window.location.href);
 
 
 
     </script>
 
-    <script src="handle_session.js></script>
+    <script src="js/handle_session.js></script>
 
 </body>
 

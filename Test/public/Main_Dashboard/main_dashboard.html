@@ -1,11 +1,40 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard</title>
 </head>
+
 <body>
     <button onclick="window.location.href = '/main_dashboard/dashboard'">PRE ADMISSION CONSOLE</button>
 </body>
+
+<script>
+    // Add an event listener for the popstate event
+    window.addEventListener('popstate', function (event) {
+        // Make an AJAX request to logout route
+        const confirmation = confirm(`Are you sure you want to logout ?`);
+        if (confirmation) {
+            fetch('/logout', {
+                method: 'GET',
+                credentials: 'same-origin' // Send cookies with the request
+            })
+                .then(response => {
+                    if (response.ok) {
+                        // Redirect to homepage or login page
+                        window.location.href = '/';
+                    } else {
+                        console.error('Logout failed');
+                    }
+                })
+                .catch(error => console.error('Error during logout:', error));
+        };
+    });
+
+    // Push a new state to the history when the page is loaded
+    window.history.pushState(null, null, window.location.href);
+</script>
+
 </html>

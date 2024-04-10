@@ -97,12 +97,93 @@
     #teacherTable th {
         background-color: #f2f2f2;
     }
+
+
+    .loading-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(255, 255, 255, 0.7);
+        /* Semi-transparent white background */
+        z-index: 9999;
+        /* Ensure the overlay appears on top of other content */
+        display: none;
+        /* Initially hidden */
+    }
+
+    .loader {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        border: 5px solid #f3f3f3;
+        /* Light gray border */
+        border-top: 5px solid #3498db;
+        /* Blue border for the top */
+        border-radius: 50%;
+        /* Circular shape */
+        width: 50px;
+        /* Width and height of the circle */
+        height: 50px;
+        animation: spin 1s linear infinite;
+        /* Rotate animation */
+    }
+
+    @keyframes spin {
+        0% {
+            transform: translate(-50%, -50%) rotate(0deg);
+        }
+
+        100% {
+            transform: translate(-50%, -50%) rotate(360deg);
+        }
+    }
+
+
+    .toast {
+        position: fixed;
+        top: 20px;
+        right: -200px;
+        /* Initially off-screen to the right */
+        background-color: #4CAF50;
+        /* Green background */
+        color: white;
+        padding: 16px;
+        border-radius: 8px;
+        z-index: 9999;
+        display: none;
+        /* Changed from 'none' to 'block' */
+        animation: slideInRight 0.5s forwards;
+        /* Slide in animation */
+    }
+
+    @keyframes slideInRight {
+        from {
+            right: -200px;
+            /* Start off-screen to the right */
+        }
+
+        to {
+            right: 20px;
+            /* End at the desired position */
+        }
+    }
+
+    .toast.error {
+        background-color: #f44336;
+        /* Red background for error */
+    }
 </style>
 
 <body>
+    <div id="toast" class="toast"></div>
     <h2>Admitted Teacher Details</h2>
     <div class="container">
-
+        <div id="loadingOverlay" class="loading-overlay">
+            <div class="loader"></div>
+        </div>
         <input type="text" id="searchField" placeholder="Enter student ID or name...">
         <button id="searchButton" onclick="searchDetails()">Search</button>
         <button id="refreshButton" onclick="refreshData()">Refresh</button>
@@ -129,7 +210,17 @@
     <!-- <div id="output" class="teacher-details"></div> -->
 
     <script>
+
+        function showLoadingAnimation() {
+            document.getElementById('loadingOverlay').style.display = 'block';
+        }
+
+        function hideLoadingAnimation() {
+            document.getElementById('loadingOverlay').style.display = 'none';
+        }
+
         function refreshData() {
+            showLoadingAnimation();
             document.getElementById('searchField').value = '';
             fetch('/admitted_teachers')
                 .then(response => response.json())
@@ -155,14 +246,19 @@
         `;
                 teacherTableBody.appendChild(row);
             });
+            hideLoadingAnimation();
         }
 
         function searchDetails() {
+            
+
             const searchTerm = document.getElementById('searchField').value.trim();
 
             // Check if the search term is empty
             if (searchTerm === '') {
-                alert('Please enter a search term.');
+                // alert('Please enter a search term.');
+                showToast('Please enter a search term.', true); // Show error toast
+                hideLoadingAnimation();
                 return;
             }
 
@@ -173,6 +269,7 @@
             }
 
             // Fetch data from the server based on the search term
+            showLoadingAnimation();
             fetch(`/admitted_teachers/search?search=${encodeURIComponent(searchTerm)}`)
                 .then(response => response.json())
                 .then(data => {
@@ -202,6 +299,7 @@
                             teacherTableBody.appendChild(row);
                         });
                     }
+                    hideLoadingAnimation();
                 })
                 .catch(error => console.error('Error:', error));
         }
@@ -211,6 +309,7 @@
         function removeTeacher(teacherName, mobileNo) {
             const confirmation = confirm(`Are you sure you want to remove the teacher "${teacherName}"?`);
             if (confirmation) {
+                showLoadingAnimation();
                 fetch(`/remove-adm-teacher?name=${encodeURIComponent(teacherName)}&mobile=${encodeURIComponent(mobileNo)}`, {
                     method: 'DELETE'
                 })
@@ -218,12 +317,14 @@
                         if (!response.ok) {
                             throw new Error('Failed to remove teacher.');
                         }
-                        alert('Teacher removed successfully.'); // Log success message
+                        showToast('Teacher deleted successfully.', false); // Show error toast
+                        // alert('Teacher removed successfully.'); // Log success message
                         refreshData(); // Refresh data after removing the teacher
                     })
                     .catch(error => {
                         console.error('Error removing teacher:', error);
-                        alert('An error occurred while removing the teacher.');
+                        // alert('An error occurred while removing the teacher.');
+                        showToast('An error occurred while removing the teacher.', true); // Show error toast
                     });
             }
         }
@@ -256,6 +357,26 @@
 
             // Trigger the download
             downloadLink.click();
+        }
+
+        function showToast(message, isError) {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+
+            // Set class based on isError flag
+            if (isError) {
+                toast.classList.add('error');
+            } else {
+                toast.classList.remove('error');
+            }
+
+            // Show the toast
+            toast.style.display = 'block';
+
+            // Hide the toast after 3 seconds
+            setTimeout(function () {
+                toast.style.display = 'none';
+            }, 3000);
         }
 
 
