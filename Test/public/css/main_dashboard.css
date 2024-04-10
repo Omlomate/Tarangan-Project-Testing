@@ -4,13 +4,18 @@
     overflow: hidden;
 }
 
-
 .sidebar {
     width: 200px; /* Adjust width as needed */
     height: 100vh; /* Make sidebar full height */
     background-color: #f0f0f0; /* Sidebar background color */
     float: left; /* Float left to position on the left side */
     padding: 20px; /* Add padding */
+}
+
+.sidebar .logo{
+    width: 12rem;
+    height: 8rem;
+    margin-bottom: 1rem;
 }
 
 /* Style for sidebar buttons */
