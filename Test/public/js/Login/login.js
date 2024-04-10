@@ -23,13 +23,6 @@
 
  //===========================TO ANIMATE FORM FLIP IMAGE========================//
 
- // Preload the images
- const imagesToPreload = ['locked.png', 'login.png', 'key.png'];
- imagesToPreload.forEach(src => {
-     const img = new Image();
-     img.src = src;
- });
-
  // Select username and password inputs
  const usernameInput = document.querySelector('input[name="username"]');
  const passwordInput = document.querySelector('input[name="password"]');

@@ -1,0 +1,50 @@
+body {
+    font-family:'Times New Roman', Times, serif;
+    text-align: center;
+}
+
+label {
+    font-size: 18px;
+    padding: 8px 12px;
+    margin-bottom: 10px;
+    display: inline-block;
+}
+
+input[type="date"] {
+    padding: 8px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+button {
+    background-color: #4CAF50;
+    color: white;
+    width: 250px;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 20px;
+    margin-bottom: 20px;
+}
+
+button:hover {
+    background-color: #45a049;
+}
+
+table {
+    border-collapse: collapse;
+    margin: 0 auto;
+    font-size: 20px;
+    text-align: center;
+}
+
+th,
+td {
+    border: 1px solid #ddd;
+    padding: 10px;
+}
+
+th {
+    background-color: #f2f2f2;
+}
