@@ -137,11 +137,11 @@ app.get('/main_dashboard/dashboard/admitted_teacher', authenticateToken, (req, r
 function authenticateToken(req, res, next) {
     const token = req.cookies.jwt;
     if (!token) {
-        return res.redirect('/login');
+        return res.redirect('/');
     }
     jwt.verify(token, JWT_SECRET, (err, decoded) => {
         if (err) {
-            return res.redirect('/login')
+            return res.redirect('/')
         }
         req.user = decoded;
         next();

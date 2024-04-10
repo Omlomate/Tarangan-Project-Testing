@@ -4,37 +4,38 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../css/main_dashboard.css">
     <title>Dashboard</title>
 </head>
 
 <body>
-    <button onclick="window.location.href = '/main_dashboard/dashboard'">PRE ADMISSION CONSOLE</button>
-</body>
+    <!-- <div class="sidebar">
+        <div class="logo">
+            <img src="../images/logo.png">
+        </div>
+        <div class="menu">
+            <ul>
+                <button onclick="window.location.href = '/main_dashboard/dashboard'">PRE ADMISSION CONSOLE</button>
+            </body>
+            </ul>
+        </div>
+    </div> -->
 
-<script>
-    // Add an event listener for the popstate event
-    window.addEventListener('popstate', function (event) {
-        // Make an AJAX request to logout route
-        const confirmation = confirm(`Are you sure you want to logout ?`);
-        if (confirmation) {
-            fetch('/logout', {
-                method: 'GET',
-                credentials: 'same-origin' // Send cookies with the request
-            })
-                .then(response => {
-                    if (response.ok) {
-                        // Redirect to homepage or login page
-                        window.location.href = '/';
-                    } else {
-                        console.error('Logout failed');
-                    }
-                })
-                .catch(error => console.error('Error during logout:', error));
-        };
-    });
+    <div class="sidebar">
+        <button>Dashboard</button>
+        <button onclick="window.location.href = '/main_dashboard/dashboard'">PRE ADMISSION CONSOLE</button>
+    </div>
 
-    // Push a new state to the history when the page is loaded
-    window.history.pushState(null, null, window.location.href);
-</script>
+    <!-- <div class="sidebar">
+        <button>Dashboard</button>
+        <button onclick="loadContent('/main_dashboard/dashboard')">PRE ADMISSION CONSOLE</button>
+    </div>
+    <div class="main-content" id="mainContent">
+
+    </div> -->
+
+
+
+    <script src="../js/main_dashboard.js"></script>
 
 </html>
