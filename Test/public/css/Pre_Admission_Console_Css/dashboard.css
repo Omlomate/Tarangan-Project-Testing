@@ -33,7 +33,11 @@ body {
     height: 15rem;
     border: none;
     border-radius: 10px;
+<<<<<<< HEAD
     background-color: #fff; /* Teal color */
+=======
+    /* background-color: #008080; */
+>>>>>>> c70c318ccbbe99e830e0e6162c71fc9c9827fa52
     color: white;
     font-size: 18px;
     font-weight: bold;
