@@ -5,11 +5,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/css/Pre_Admission_Console_Css/dashboard.css">
+    <link rel="stylesheet" href="/css/Pre_Admission_Console_Css/age_calculator.css">
 
     <title>Pre Admission Console</title>
 </head>
   
 <body>
+    <div class="overlay"></div> <!-- Overlay element -->
+
     <div id="loader"></div>
 
     <ddiv class="nav">
@@ -19,7 +22,7 @@
     
 
     <div class="button-container fadeup">
-        <button class="button" onclick="navigate_to_age_calculator()">
+        <button class="button" onclick="createPrompt()">  
             <div class="button-content">
                 <div class="svg">
                     <script src="https://unpkg.com/@dotlottie/player-component@latest/dist/dotlottie-player.mjs"
@@ -80,6 +83,7 @@
     </div>
 
     <script src="/js/Pre_Admission_Console_js/dashboard.js"></script>
+    <script src="/js/Pre_Admission_Console_js/age_calculator.js"></script>
     <script src="/handle_session.js"></script>
 
 
