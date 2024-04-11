@@ -1,23 +1,23 @@
  //======================== TO ANIMATE IMAGE MOVEMENT ON MOUSE TRACKING =============//
 
- var container = document.getElementById('container1');
- var image = container.querySelector('img');
+//  var container = document.getElementById('container1');
+//  var image = container.querySelector('img');
 
- container.addEventListener('mousemove', function (e) {
-     var boundingRect = container.getBoundingClientRect();
-     var offsetX = e.clientX - boundingRect.left - boundingRect.width / 2;
-     var offsetY = e.clientY - boundingRect.top - boundingRect.height / 2;
-     var percentX = offsetX / (boundingRect.width / 2) * 5; // Adjust the speed as needed
-     var percentY = offsetY / (boundingRect.height / 2) * 5; // Adjust the speed as needed
-     var rotateX = -3 * percentY; // Adjust the degree of rotation as needed
-     var rotateY = 3 * percentX; // Adjust the degree of rotation as needed
-     var transformValue = 'perspective(1000px) rotateX(' + rotateX + 'deg) rotateY(' + rotateY + 'deg) scale(1.05)'; // Magnifying effect
-     image.style.transform = transformValue;
- });
+//  container.addEventListener('mousemove', function (e) {
+//      var boundingRect = container.getBoundingClientRect();
+//      var offsetX = e.clientX - boundingRect.left - boundingRect.width / 2;
+//      var offsetY = e.clientY - boundingRect.top - boundingRect.height / 2;
+//      var percentX = offsetX / (boundingRect.width / 2) * 5; // Adjust the speed as needed
+//      var percentY = offsetY / (boundingRect.height / 2) * 5; // Adjust the speed as needed
+//      var rotateX = -3 * percentY; // Adjust the degree of rotation as needed
+//      var rotateY = 3 * percentX; // Adjust the degree of rotation as needed
+//      var transformValue = 'perspective(1000px) rotateX(' + rotateX + 'deg) rotateY(' + rotateY + 'deg) scale(1.05)'; // Magnifying effect
+//      image.style.transform = transformValue;
+//  });
 
- container.addEventListener('mouseleave', function () {
-     image.style.transform = 'none';
- });
+//  container.addEventListener('mouseleave', function () {
+//      image.style.transform = 'none';
+//  });
 
 
 

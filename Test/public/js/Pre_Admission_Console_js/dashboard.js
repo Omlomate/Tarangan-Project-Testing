@@ -1,5 +1,20 @@
-// Functions to navigate from Dashboard to different activities/pages
+// document.addEventListener('DOMContentLoaded', function() {
+//     const myLottie = document.getElementById('myLottie');
+//     const loader = document.getElementById('loader');
 
+//     // Show the loader while waiting for the animation to load
+//     loader.style.display = 'block';
+
+//     // Wait for the Lottie animation to be loaded
+//     myLottie.addEventListener('load', function() {
+//         // Hide the loader when the animation has finished loading
+//         loader.style.display = 'none';
+//     });
+// });
+
+
+
+// Functions to navigate from Dashboard to different activities/pages
 function navigate_to_age_calculator() {
     window.location.href = "/main_dashboard/dashboard/age-calculator";
 }
@@ -43,6 +58,5 @@ document.getElementById('logoutButton').addEventListener('click', function () {
             .catch(error => console.error('Error during logout:', error));
     };
 })
-
 
 
