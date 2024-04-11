@@ -7,20 +7,33 @@ body {
 }
 
 .button-container {
+    margin-top: 7rem;
     display: grid;
-    grid-template-columns: repeat(3, 1fr); /* 3 columns */
+    grid-template-columns: repeat(5, 1fr); /* 3 columns */
     gap: 20px;
-    padding: 10px;
+    padding: 5px;
     justify-content: center;
     place-items: center;
+    
+}
+
+@keyframes fadeUp {
+    from {
+        opacity: 0;
+        transform: translateY(50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 .button {
-    width: 450px;
-    height: 350px;
+    width: 15rem;
+    height: 15rem;
     border: none;
     border-radius: 10px;
-    background-color: #008080; /* Teal color */
+    background-color: #fff; /* Teal color */
     color: white;
     font-size: 18px;
     font-weight: bold;
@@ -28,7 +41,15 @@ body {
     overflow: hidden;
     transition: transform 0.3s;
     cursor: pointer;
+    display: flex;
+    text-align: center;
+    justify-content: flex-end;
+    align-items: center;
+    flex-direction: column;
+    font-family: 'Times New Roman', Times, serif;
+    animation: fadeUp 1s ease-in-out forwards;
 }
+
 
 .button:hover {
     transform: scale(1.05);
@@ -54,6 +75,16 @@ body {
     
 }
 
+h3{
+    /* background-color: #fff; */
+    color: black;
+    z-index: 99;
+    position: absolute;
+    
+   
+    
+}
+
 @keyframes fade-up {
     from {
         opacity: 0;
@@ -65,3 +96,26 @@ body {
         transform: translateY(0);
     }
 }
+
+
+.signout-button {
+    position: fixed;
+    top: 0;
+    right: 0;
+    margin: 20px; /* Add margin for better spacing */
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    background-color: #008080; /* Teal color */
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    z-index: 999; /* Ensure it's above other elements */
+}
+
+/* Style for hover effect */
+.signout-button:hover {
+    background-color: #005353; /* Darker teal color */
+}
+

@@ -52,7 +52,7 @@ app.post('/login', (req, res) => {
         if (error) {
             console.error('Error querying database:', error);
             res.status(500).send('Internal Server Error');
-            return;
+            res.redirect("/");
         }
 
         // Here results is returning a row datapacket which contains all columns data for specific user

@@ -85,7 +85,7 @@ body {
     height: auto;
     margin-bottom: 20px;
     opacity: 0;
-    animation: slide-in 1s ease forwards;
+    animation: slide-in 0.4s ease forwards;
 }
 
 .login-form input {
@@ -103,7 +103,7 @@ body {
     transition: border-color 0.5s ease;
     text-align: center;
     opacity: 0;
-    animation: slide-in 1s ease forwards;
+    animation: slide-in 0.6s ease forwards;
     animation-delay: 0.5s;
 }
 
@@ -148,7 +148,7 @@ body {
     cursor: pointer;
     transition: background-color 0.5s ease;
     opacity: 0;
-    animation: slide-in 1s ease forwards;
+    animation: slide-in 0.4s ease forwards;
     animation-delay: 1s;
 }
 
@@ -217,3 +217,4 @@ body {
         max-width: 100%;
     }
 }
+
