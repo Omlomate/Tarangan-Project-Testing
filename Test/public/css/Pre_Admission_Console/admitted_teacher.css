@@ -28,44 +28,22 @@ h2 {
 }
 
 #searchButton,
-#refreshButton
-{
+#refreshButton,
+#export_admitted_teacher {
     /* padding: 5px 10px; */
     cursor: pointer;
     background-color: #4CAF50;
     color: white;
     border: none;
-    border-radius: 20px;
-    height: 2.3rem;
-    width: 7rem;
-    font-size: 1.2rem;
-}
-#admitted_students{
-    cursor: pointer;
-    background-color: #4CAF50;
-    color: white;
-    border: none;
-    border-radius: 20px;
-    height: 2.3rem;
-    width: 11rem;
-    font-size: 1.2rem;
-}
-#export_admitted_students,
-#export_registered_students{
-    cursor: pointer;
-    background-color: #4CAF50;
-    color: white;
-    border: none;
-    border-radius: 20px;
+    border-radius: 4px;
     height: 2.3rem;
     width: 7rem;
     font-size: 1.2rem;
 }
 
 #searchButton:hover,
-#admitted_students:hover,
 #refreshButton:hover,
-#export_admitted_students:hover {
+#export_admitted_teacher:hover {
     background-color: #45a049;
 }
 
@@ -73,28 +51,8 @@ h2 {
     padding: 5px;
     margin-bottom: 10px;
     border-radius: 0.5rem;
-    width: 10rem;
-    height: 2.2rem;
-}
-
-#output {
-    padding: 2rem;
-}
-
-#studentTable {
-    width: 100%;
-    border-collapse: collapse;
-}
-
-#studentTable th,
-#studentTable td {
-    border: 1px solid #dddddd;
-    padding: 8px;
-    text-align: left;
-}
-
-#studentTable th {
-    background-color: #f2f2f2;
+    width: 15rem;
+    height: 2.5rem;
 }
 
 .student-details {
@@ -104,36 +62,32 @@ h2 {
     margin-top: 20px;
 }
 
-.student {
-    display: flex;
-    /* flex-direction: column; */
-    justify-content:space-evenly;
-    gap: 5rem;
-    border: 1px solid #ccc;
-    padding: 10px;
-    margin-bottom: 10px;
+#output {
+    width: 90%;
+    margin: 0 auto;
+    /* This centers the element horizontally */
 }
 
-.student p {
-    margin: 5px 0;
-    display: flex; /* Use flexbox for horizontal alignment */
-    justify-content: space-between; /* Distribute items equally along the row */
-    align-items: center; /* Center items vertically */
+#output {
+    padding: 2rem;
 }
 
-.student button {
-    margin-top: auto; /* Push buttons to the bottom */
-    align-self: center; /* Center buttons horizontally */
-    background-color: #007bff;
-    color: #fff;
-    border: none;
-    padding: 5px 10px;
-    cursor: pointer;
+#teacherTable {
+    width: 100%;
+    border-collapse: collapse;
 }
 
-.student button:hover {
-    background-color: #0056b3;
+#teacherTable th,
+#teacherTable td {
+    border: 1px solid #dddddd;
+    padding: 8px;
+    text-align: left;
 }
+
+#teacherTable th {
+    background-color: #f2f2f2;
+}
+
 
 .loading-overlay {
     position: fixed;
