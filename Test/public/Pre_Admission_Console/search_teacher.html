@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../css/Pre_Admission_Console/search_teacher.css">
+    <link rel="stylesheet" href="/css/Pre_Admission_Console_Css/search_teacher.css">
     <title>Search Teacher Details</title>
 </head>
 
@@ -18,7 +18,8 @@
         <input type="text" id="searchField" placeholder="Enter Teacher Name...">
         <button id="searchButton" onclick="searchDetails()">Search</button>
         <button id="refreshButton" onclick="refreshData()">Refresh</button>
-        <button id="admitted_teachers" onclick="window.location.href = '/main_dashboard/dashboard/admitted_teacher'">Admitted
+        <button id="admitted_teachers"
+            onclick="window.location.href = '/main_dashboard/dashboard/admitted_teacher'">Admitted
             Teachers</button>
         <button id="export_registered_teacher" onclick="exportToExcel()">Export Reg</button>
 
@@ -248,6 +249,6 @@
         refreshData();
     </script>
 
-    <script src="handle_session.js"></script>
+    <script src="/handle_session.js"></script>
 
 </body>
