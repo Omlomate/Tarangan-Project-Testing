@@ -89,8 +89,8 @@ body {
 }
 
 .login-form input {
-    width: 90%;
-    padding: 15px;
+    width: 100%;
+    padding: 15px 0px;
     margin-bottom: 15px;
     border-top: none;
     border-right: none;
