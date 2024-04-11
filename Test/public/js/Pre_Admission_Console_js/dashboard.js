@@ -16,7 +16,12 @@
 
 // Functions to navigate from Dashboard to different activities/pages
 function navigate_to_age_calculator() {
-    window.location.href = "/main_dashboard/dashboard/age-calculator";
+    document.getElementById("age_calculator").addEventListener("click", function() {
+    var response = prompt("Please enter your name:");
+    if (response !== null) {
+        alert("Hello, " + response + "!"); // Display the entered name in an alert
+    }
+});
 }
 
 function navigateTo_register_student() {
