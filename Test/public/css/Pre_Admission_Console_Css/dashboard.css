@@ -29,8 +29,8 @@ body {
 }
 
 .button {
-    width: 15rem;
-    height: 15rem;
+    width: 19rem;
+    height: 17rem;
     border: none;
     border-radius: 10px;
     background-color: #fff; /* Teal color */
@@ -47,7 +47,8 @@ body {
     align-items: center;
     flex-direction: column;
     font-family: 'Times New Roman', Times, serif;
-    animation: fadeUp 1s ease-in-out forwards;
+    animation: fadeUp 1s ease-in-out forwards;   
+    gap: 3rem;
 }
 
 
@@ -69,13 +70,13 @@ body {
     transform: scale(1.1);
 }
 
-.button-content {
+/* .button-content {
     position: relative;
     z-index: 1;
     
-}
+} */
 
-h3{
+.button-container .svg h3{
     /* background-color: #fff; */
     color: black;
     z-index: 99;
@@ -119,3 +120,8 @@ h3{
     background-color: #005353; /* Darker teal color */
 }
 
+
+/* .animationsvg{
+    width: 109%;
+    height: 94%;
+} */
