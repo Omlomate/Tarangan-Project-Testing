@@ -23,7 +23,7 @@ function handleInactive() {
             // Reset the timer if the user selects "No"
             handleInactive();
         }
-    }, 3000); // Set the inactive time threshold 5mins
+    }, 50000); // Set the inactive time threshold 5mins
 }
 
 // Reset the inactivity timer when mouse movement or clicks are detected

@@ -16,6 +16,10 @@ app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'Login','login.html'));
 });
  
+// Serve handle_session.js file
+app.get('/handle_session.js', (req, res) => {
+    res.sendFile(path.join(__dirname, 'src', 'middlewares', 'handle_session.js'));
+});
   
 // Set up Express to parse request bodies
 app.use(express.urlencoded({ extended: true }));
