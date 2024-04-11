@@ -4,63 +4,45 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/Pre_Admission_Console_Css/dashboard.css">
+
     <title>Pre Admission Console</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-        }
-
-        .button {
-            display: inline-block;
-            padding: 10px 20px;
-            margin: 10px;
-            font-size: 16px;
-            cursor: pointer;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            text-decoration: none;
-            opacity: 0;
-            animation: fade-up 0.5s forwards;
-        
-        }
-
-        @keyframes fade-up {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-    </style>
 </head>
 
 <body>
 
     <h2>Pre Admission Console</h2>
 
-    <button class="button" onclick="navigate_to_age_calculator()">Age Calculator</button>
-    <!-- Button click event for navigating to Age Calculator activity-->
-    <button class="button" onclick="navigateTo_register_student()">Register Student</button>
-    <!-- Button click event for navigating to Register Student activity-->
-    <button class="button" onclick="navigateTo_search_student()">Search Student</button>
-    <!-- Button click event for navigating to Search Student activity-->
-    <button class="button" onclick="navigateTo_register_teacher()">Register Teacher</button>
-    <!-- Button click event for navigating to Register Teacher activity-->
-    <button class="button" onclick="navigateTo_search_teacher()">Search Teacher</button>
-    <!-- Button click event for navigating to Signout activity-->
-    <button class="button" id="logoutButton">Signout</button> <!-- Button click event for Signingout-->
+    <div class="button-container">
+        <button class="button" onclick="navigate_to_age_calculator()">
+            <img src="https://www.clearias.com/up/upsc-age-calculator.png" alt="Background Image">
+            <div class="button-content">Age Calculator</div>
+        </button>
+        <button class="button" onclick="navigateTo_register_student()">
+            <img src="background2.jpg" alt="Background Image">
+            <div class="button-content">Register Student</div>
+        </button>
+        <button class="button" onclick="navigateTo_search_student()">
+            <img src="background3.jpg" alt="Background Image">
+            <div class="button-content">Search Student</div>
+        </button>
+        <button class="button" onclick="navigateTo_register_teacher()">
+            <img src="background4.jpg" alt="Background Image">
+            <div class="button-content">Register Teacher</div>
+        </button>
+        <button class="button" onclick="navigateTo_search_teacher()">
+            <img src="background5.jpg" alt="Background Image">
+            <div class="button-content">Search Teacher</div>
+        </button>
+        <button class="button" id="logoutButton">
+            <img src="background6.jpg" alt="Background Image">
+            <div class="button-content">Signout</div>
+        </button>
+    </div>
 
+    <script src="/js/Pre_Admission_Console_js/dashboard.js"></script>
+    <script src="/handle_session.js"></script>
 
-
-
-    <script src="../js/handle_session.js"></script>
 
 </body>
 

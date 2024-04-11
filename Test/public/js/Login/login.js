@@ -9,8 +9,8 @@
      var offsetY = e.clientY - boundingRect.top - boundingRect.height / 2;
      var percentX = offsetX / (boundingRect.width / 2) * 5; // Adjust the speed as needed
      var percentY = offsetY / (boundingRect.height / 2) * 5; // Adjust the speed as needed
-     var rotateX = -6 * percentY; // Adjust the degree of rotation as needed
-     var rotateY = 6 * percentX; // Adjust the degree of rotation as needed
+     var rotateX = -3 * percentY; // Adjust the degree of rotation as needed
+     var rotateY = 3 * percentX; // Adjust the degree of rotation as needed
      var transformValue = 'perspective(1000px) rotateX(' + rotateX + 'deg) rotateY(' + rotateY + 'deg) scale(1.05)'; // Magnifying effect
      image.style.transform = transformValue;
  });
@@ -22,13 +22,6 @@
 
 
  //===========================TO ANIMATE FORM FLIP IMAGE========================//
-
- // Preload the images
- const imagesToPreload = ['locked.png', 'login.png', 'key.png'];
- imagesToPreload.forEach(src => {
-     const img = new Image();
-     img.src = src;
- });
 
  // Select username and password inputs
  const usernameInput = document.querySelector('input[name="username"]');
